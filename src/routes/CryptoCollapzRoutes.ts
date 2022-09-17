@@ -5,7 +5,7 @@ export default () => {
   const indexRouter = express.Router();
   const cryptoCollapzController = new CryptoCollapzController();
 
-  indexRouter.get('/', cryptoCollapzController.index);
+  indexRouter.post('/', cryptoCollapzController.index);
 
   return indexRouter;
 };
