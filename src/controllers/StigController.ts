@@ -1,63 +1,75 @@
 import {NextFunction, Request, Response} from 'express';
 
-const gcd = (a: number, b: number): number => {
-  if (b === 0) {
-    return a;
+type Question = {
+  lower: number;
+  higher: number;
+};
+
+type Input = {
+  questions: Question[];
+  maxRating: number;
+};
+
+type Output = {
+  p: number;
+  q: number;
+};
+
+function gcdTwoNumbers(x: number, y: number) {
+  x = Math.abs(x);
+  y = Math.abs(y);
+  while (y) {
+    var t = y;
+    y = x % y;
+    x = t;
+  }
+  return x;
+}
+
+const getPandQWarmUp = (currentInput: Input): Output => {
+  let q = currentInput.maxRating;
+  let p = 0;
+  for (let i = 1; i <= currentInput.maxRating; i++) {
+    const range = new Array<number>(currentInput.maxRating).fill(0);
+    for (let j = 0; j < currentInput.questions.length; j++) {
+      const currentQuestion = currentInput.questions[j];
+      if (i >= currentQuestion.lower && i <= currentQuestion.higher) {
+        for (let k = 0; k < range.length; k++) {
+          if (k + 1 < currentQuestion.lower || k + 1 > currentQuestion.higher) {
+            range[k]++;
+          }
+        }
+      } else {
+        for (
+          let k = currentQuestion.lower - 1;
+          k < currentQuestion.higher;
+          k++
+        ) {
+          range[k]++;
+        }
+      }
+    }
+    if (range.indexOf(0) === i - 1) p++;
   }
 
-  return gcd(b, a % b);
+  const gcd = gcdTwoNumbers(q, p);
+  return {
+    p: p / gcd,
+    q: q / gcd,
+  };
 };
 
 export default class StigController {
-  public async warmUp(req: Request, res: Response, next: NextFunction) {
-    const ans: {p: number; q: number}[] = [];
+  public warmUp(req: Request, res: Response, next: NextFunction) {
+    const input: Input[] = req.body as Input[];
+    const output: Output[] = input.map(currentInput =>
+      getPandQWarmUp(currentInput)
+    );
 
-    req.body.forEach((testCase: any) => {
-      const questions: {
-        lower: number;
-        higher: number;
-      }[] = testCase.questions;
+    res.json(output);
+  }
 
-      const maxRating: number = testCase.maxRating;
-
-      let p = 0;
-
-      for (let k = 1; k <= maxRating; k++) {
-        let arr: number[] = [];
-        for (let i = 0; i < maxRating + 5; i++) {
-          arr.push(0);
-        }
-
-        questions.forEach(({lower, higher}) => {
-          if (k < lower || k > higher) {
-            ++arr[lower];
-            --arr[higher + 1];
-          } else {
-            ++arr[1];
-            --arr[lower];
-            ++arr[higher];
-          }
-        });
-
-        for (let i = 1; i <= maxRating; i++) {
-          arr[i] += arr[i - 1];
-          if (arr[i] === 0) {
-            if (i === k) {
-              ++p;
-            }
-            break;
-          }
-        }
-      }
-
-      const g = gcd(p, maxRating);
-
-      ans.push({
-        p: p / g,
-        q: maxRating / g,
-      });
-    });
-
-    res.json(ans);
+  public full(req: Request, res: Response, next: NextFunction) {
+    res.json({message: 'TypeScript + Express Server'});
   }
 }
