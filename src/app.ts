@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import IndexRoutes from './routes/IndexRoutes';
 import CryptoCollapzRoutes from './routes/CryptoCollapzRoutes';
 import MagicCauldronsRoutes from './routes/MagicCauldronsRoutes';
+import StigRoutes from './routes/StigRoutes';
 export default class App {
   public app: Application;
 
@@ -32,6 +33,7 @@ export default class App {
     this.app.use('/', IndexRoutes());
     this.app.use('/cryptocollapz', CryptoCollapzRoutes());
     this.app.use('/magiccauldrons', MagicCauldronsRoutes());
+    this.app.use('/stig', StigRoutes());
   }
 
   public listen(port: string) {
