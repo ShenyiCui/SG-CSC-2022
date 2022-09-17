@@ -33,7 +33,7 @@ const getPandQWarmUp = (currentInput: Input): Output => {
     const range = new Array<number>(currentInput.maxRating).fill(0);
     for (let j = 0; j < currentInput.questions.length; j++) {
       const currentQuestion = currentInput.questions[j];
-      if (i < currentQuestion.lower || i >= currentQuestion.higher) {
+      if (i < currentQuestion.lower || i > currentQuestion.higher) {
         range[currentQuestion.lower - 1] += 1;
         range[currentQuestion.higher] += -1;
         continue;
