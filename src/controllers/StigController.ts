@@ -65,11 +65,51 @@ const getPandQWarmUp = (currentInput: Input): Output => {
   };
 };
 
+const solve = (input: Input) => {
+  const {questions, maxRating} = input;
+
+  const ans = {
+    p: 0,
+    q: maxRating,
+  };
+
+  for (let k = 1; k <= maxRating; k++) {
+    let arr = new Array<number>(maxRating + 5).fill(0);
+    questions.forEach(question => {
+      if (!(question.lower <= k && k <= question.higher)) {
+        arr[question.lower] += 1;
+        arr[question.higher + 1] -= 1;
+      } else {
+        arr[1] += 1;
+        arr[question.lower] -= 1;
+        arr[question.higher + 1] += 1;
+      }
+    });
+
+    for (let i = 1; i <= maxRating; i++) {
+      arr[i] += arr[i - 1];
+      if (arr[i] === 0) {
+        if (i == k) {
+          ans.p += 1;
+        }
+        break;
+      }
+    }
+  }
+
+  const g = gcdTwoNumbers(ans.p, ans.q);
+  ans.p /= g;
+  ans.q /= g;
+
+  return ans;
+};
+
 export default class StigController {
   public warmUp(req: Request, res: Response, next: NextFunction) {
     const input: Input[] = req.body as Input[];
     const output: Output[] = input.map(currentInput =>
-      getPandQWarmUp(currentInput)
+      // getPandQWarmUp(currentInput)
+      solve(currentInput)
     );
 
     res.json(output);
