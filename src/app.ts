@@ -1,7 +1,7 @@
 import express, {Application} from 'express';
 
 import IndexRoutes from './routes/IndexRoutes';
-
+import CryptoCollapzRoutes from './routes/CryptoCollapzRoutes';
 export default class App {
   public app: Application;
 
@@ -28,6 +28,7 @@ export default class App {
 
   public initControllers() {
     this.app.use('/', IndexRoutes());
+    this.app.use('/cryptocollapz', CryptoCollapzRoutes());
   }
 
   public listen(port: string) {
