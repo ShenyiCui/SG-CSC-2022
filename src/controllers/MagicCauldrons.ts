@@ -149,7 +149,7 @@ export default class MagicCauldronsController {
     const output: Output[] = input.map(parts => {
       return {
         part1: roundToTwo(partOne(parts.part1)),
-        part2: roundToTwo(partTwo(parts.part2)),
+        part2: Math.round(partTwo(parts.part2)),
         part3: 0,
         part4: 0,
       };
