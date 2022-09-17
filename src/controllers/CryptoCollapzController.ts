@@ -10,37 +10,27 @@ export default class CryptoCollapzController {
       [4, 4],
     ]);
 
-    const solveForMax = (
-      num: number,
-      max: number,
-      visited: Set<number>
-    ): number => {
+    const solveForMax = (num: number): number => {
       if (memory.has(num)) {
         return memory.get(num)!;
       }
 
-      if (visited.has(num)) {
-        visited.forEach(function (val) {
-          memory.set(val, max);
-        });
-        return max;
-      }
-      visited.add(num);
-
+      let resp = 0;
       const isEven = num % 2 === 0;
       if (isEven) {
         const newResult = num / 2;
-        const newMax = Math.max(newResult, max);
-        return Math.max(solveForMax(newResult, newMax, visited), max);
+        resp = Math.max(solveForMax(newResult), num);
       } else {
         const newResult = num * 3 + 1;
-        const newMax = Math.max(newResult, max);
-        return Math.max(solveForMax(newResult, newMax, visited), max);
+        resp = Math.max(solveForMax(newResult), num);
       }
+
+      memory.set(num, resp);
+      return resp;
     };
 
     const cryptoMax = (testCase: number[]) =>
-      testCase.map(val => solveForMax(val, val, new Set<number>()));
+      testCase.map(val => solveForMax(val));
     const output = input.map(x => cryptoMax(x));
 
     res.json(output);
