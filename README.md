@@ -1,4 +1,4 @@
-# Express TypeScript Template
+# SG CIS 2022 Challenge
 
 ## Getting Started
 1. Install `nvm`
