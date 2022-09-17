@@ -46,8 +46,8 @@ const getPandQWarmUp = (currentInput: Input): Output => {
     for (let j = 1; j < prefixSum.length; j++) {
       prefixSum[j] = prefixSum[j - 1] + prefixSum[j];
     }
-    console.log('range', range);
-    console.log('prefix', prefixSum);
+    // console.log('range', range);
+    // console.log('prefix', prefixSum);
     for (let j = 0; j < prefixSum.length; j++) {
       if (prefixSum[j] === 0) {
         if (j + 1 === i) {
