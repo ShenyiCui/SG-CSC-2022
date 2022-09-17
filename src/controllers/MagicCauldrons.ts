@@ -148,8 +148,10 @@ const partThree = (input: Part1): number => {
   const memory = new Map<string, number>();
 
   const findOverflow = (row: number, col: number): number => {
+    const isEven = col % 2 === 0;
+    const capacity = isEven ? 150 : 100;
     if (row == 0 && col == 0) {
-      const overflow = flow_rate * time - 150;
+      const overflow = flow_rate * time - capacity;
       return overflow < 0 ? 0 : overflow / 2;
     }
     if (col < 0 || col > row) {
@@ -162,8 +164,6 @@ const partThree = (input: Part1): number => {
     const currentValue =
       findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
 
-    const isEven = col % 2 === 0;
-    const capacity = isEven ? 150 : 100;
     if (currentValue > capacity) {
       const overflow = (currentValue - capacity) / 2;
       memory.set([row, col].toString(), overflow);
@@ -175,13 +175,14 @@ const partThree = (input: Part1): number => {
   };
 
   const solve = (row: number, col: number): number => {
-    if (row === 0 && col === 0) {
-      const isOverflow = flow_rate * time - 150 > 0;
-      return isOverflow ? 150 : flow_rate * time;
-    }
-    const answer = findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
     const isEven = col % 2 === 0;
     const capacity = isEven ? 150 : 100;
+
+    if (row === 0 && col === 0) {
+      const isOverflow = flow_rate * time - capacity > 0;
+      return isOverflow ? capacity : flow_rate * time;
+    }
+    const answer = findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
     return answer >= capacity ? capacity : answer;
   };
 
@@ -190,11 +191,17 @@ const partThree = (input: Part1): number => {
 
 const partFour = (input: Part2): number => {
   const {flow_rate, amount_of_soup, row_number, col_number} = input;
-  const memory = new Map<string, number>();
 
-  const findOverflow = (row: number, col: number, time: number): number => {
+  const findOverflow = (
+    row: number,
+    col: number,
+    time: number,
+    memory: Map<string, number>
+  ): number => {
+    const isEven = col % 2 === 0;
+    const capacity = isEven ? 150 : 100;
     if (row == 0 && col == 0) {
-      const overflow = flow_rate * time - 150;
+      const overflow = flow_rate * time - capacity;
       return overflow < 0 ? 0 : overflow / 2;
     }
     if (col < 0 || col > row) {
@@ -205,10 +212,9 @@ const partFour = (input: Part2): number => {
     }
 
     const currentValue =
-      findOverflow(row - 1, col, time) + findOverflow(row - 1, col - 1, time);
+      findOverflow(row - 1, col, time, memory) +
+      findOverflow(row - 1, col - 1, time, memory);
 
-    const isEven = col % 2 === 0;
-    const capacity = isEven ? 150 : 100;
     if (currentValue > capacity) {
       const overflow = (currentValue - capacity) / 2;
       memory.set([row, col].toString(), overflow);
@@ -220,14 +226,17 @@ const partFour = (input: Part2): number => {
   };
 
   const solve = (row: number, col: number, time: number): number => {
-    if (row === 0 && col === 0) {
-      const isOverflow = flow_rate * time - 150 > 0;
-      return isOverflow ? 150 : flow_rate * time;
-    }
-    const answer =
-      findOverflow(row - 1, col, time) + findOverflow(row - 1, col - 1, time);
     const isEven = col % 2 === 0;
     const capacity = isEven ? 150 : 100;
+    const memory = new Map<string, number>();
+
+    if (row === 0 && col === 0) {
+      const isOverflow = flow_rate * time - capacity > 0;
+      return isOverflow ? capacity : flow_rate * time;
+    }
+    const answer =
+      findOverflow(row - 1, col, time, memory) +
+      findOverflow(row - 1, col - 1, time, memory);
     return answer >= capacity ? capacity : answer;
   };
 
