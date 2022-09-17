@@ -271,7 +271,7 @@ export default class MagicCauldronsController {
         part1: roundToTwo(partOne(parts.part1)),
         part2: Math.round(partTwo(parts.part2)),
         part3: roundToTwo(partThree(parts.part3)),
-        part4: Math.round(partFour(parts.part4)),
+        part4: 0,
       };
     });
     res.json(output);
