@@ -149,7 +149,7 @@ const partThree = (input: Part1): number => {
 
   const findOverflow = (row: number, col: number): number => {
     if (row == 0 && col == 0) {
-      const overflow = flow_rate * time - 100;
+      const overflow = flow_rate * time - 150;
       return overflow < 0 ? 0 : overflow / 2;
     }
     if (col < 0 || col > row) {
@@ -176,8 +176,8 @@ const partThree = (input: Part1): number => {
 
   const solve = (row: number, col: number): number => {
     if (row === 0 && col === 0) {
-      const isOverflow = flow_rate * time - 100 > 0;
-      return isOverflow ? 100 : flow_rate * time;
+      const isOverflow = flow_rate * time - 150 > 0;
+      return isOverflow ? 150 : flow_rate * time;
     }
     const answer = findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
     const isEven = col % 2 === 0;
