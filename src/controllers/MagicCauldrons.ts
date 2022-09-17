@@ -143,6 +143,51 @@ const partTwo = (input: Part2): number => {
   return mid;
 };
 
+const partThree = (input: Part1): number => {
+  const {flow_rate, time, row_number, col_number} = input;
+  const memory = new Map<string, number>();
+
+  const findOverflow = (row: number, col: number): number => {
+    if (row == 0 && col == 0) {
+      const overflow = flow_rate * time - 100;
+      return overflow < 0 ? 0 : overflow / 2;
+    }
+    if (col < 0 || col > row) {
+      return 0;
+    }
+    if (memory.has([row, col].toString())) {
+      return memory.get([row, col].toString())!;
+    }
+
+    const currentValue =
+      findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
+
+    if (currentValue > 100) {
+      const isEven = col % 2 === 0;
+      const capacity = isEven ? 150 : 100;
+      const overflow = (currentValue - capacity) / 2;
+      memory.set([row, col].toString(), overflow);
+      return overflow;
+    }
+
+    memory.set([row, col].toString(), 0);
+    return 0;
+  };
+
+  const solve = (row: number, col: number): number => {
+    if (row === 0 && col === 0) {
+      const isOverflow = flow_rate * time - 100 > 0;
+      return isOverflow ? 100 : flow_rate * time;
+    }
+    const answer = findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
+    const isEven = col % 2 === 0;
+    const capacity = isEven ? 150 : 100;
+    return answer >= capacity ? capacity : answer;
+  };
+
+  return solve(row_number, col_number);
+};
+
 export default class MagicCauldronsController {
   public index(req: Request, res: Response, next: NextFunction) {
     const input: Item[] = req.body as Item[];
@@ -150,7 +195,7 @@ export default class MagicCauldronsController {
       return {
         part1: roundToTwo(partOne(parts.part1)),
         part2: Math.round(partTwo(parts.part2)),
-        part3: 0,
+        part3: roundToTwo(partOne(parts.part3)),
         part4: 0,
       };
     });
