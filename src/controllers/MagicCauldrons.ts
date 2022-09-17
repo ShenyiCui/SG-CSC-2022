@@ -58,7 +58,7 @@ export default class MagicCauldronsController {
     const input: Item[] = req.body as Item[];
     const output: Output[] = input.map(parts => {
       return {
-        part1: partOne(parts.part1),
+        part1: +partOne(parts.part1).toFixed(2),
         part2: 0,
         part3: 0,
         part4: 0,
