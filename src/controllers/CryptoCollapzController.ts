@@ -3,6 +3,7 @@ import {NextFunction, Request, Response} from 'express';
 export default class CryptoCollapzController {
   public async index(req: Request, res: Response) {
     const input: number[][] = req.body as number[][];
+    console.log(input);
     const memory = new Map<number, number>([
       [1, 4],
       [2, 4],
@@ -24,7 +25,6 @@ export default class CryptoCollapzController {
         });
         return max;
       }
-
       visited.add(num);
 
       const isEven = num % 2 === 0;
