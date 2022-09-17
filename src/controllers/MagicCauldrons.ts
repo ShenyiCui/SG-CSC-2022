@@ -57,7 +57,6 @@ export default class MagicCauldronsController {
   public index(req: Request, res: Response, next: NextFunction) {
     const input: Item[] = req.body as Item[];
     const output: Output[] = input.map(parts => {
-      console.log(parts.part1);
       return {
         part1: partOne(parts.part1),
         part2: 0,
