@@ -13,7 +13,7 @@ export default class App {
   public initMiddlewares() {
     this.app.use(bodyParser.json({limit: '5gb'}));
     this.app.use(bodyParser.urlencoded({extended: true, limit: '5gb'}));
-    this.app.use((req, res, next) => {
+    this.app.use((_, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header(
         'Access-Control-Allow-Methods',
