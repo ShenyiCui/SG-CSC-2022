@@ -162,9 +162,9 @@ const partThree = (input: Part1): number => {
     const currentValue =
       findOverflow(row - 1, col) + findOverflow(row - 1, col - 1);
 
-    if (currentValue > 100) {
-      const isEven = col % 2 === 0;
-      const capacity = isEven ? 150 : 100;
+    const isEven = col % 2 === 0;
+    const capacity = isEven ? 150 : 100;
+    if (currentValue > capacity) {
       const overflow = (currentValue - capacity) / 2;
       memory.set([row, col].toString(), overflow);
       return overflow;
